@@ -192,7 +192,7 @@ def main():
                             (tus, lyo), (tus, tys), (rom, tys), 
                             (nap, tys), (nap, ion), (naf, mao),
                             (naf, wes), (tun, wes), (tun, tys),
-                            (tun, ion), (syr, eas)
+                            (tun, ion), (syr, eas), (gas, mao),
                             (cly, nao), (cly, nwg), (lvp, nao),
                             (lvp, iri), (wal, iri), (wal, eng),
                             (lon, eng), (lon, nth), (yor, nth),
@@ -210,6 +210,7 @@ def main():
                             (stpnc, bar), (nwy, bar), (nwy, nwg),
                             (nwy, nth), (nwy, ska), (swe, ska),
                             (swe, bal), (swe, bot), (fin, bot),
+                            (por, mao)
                             ], label=['F'])
     
     board.add_edges_from([(cly, edi), (edi, yor), (yor, lon),
@@ -218,8 +219,17 @@ def main():
                           (bel, hol), (hol, kie), (kie, den),
                           (kie, ber), (ber, pru), (pru, lvn),
                           (lvn, stpsc), (stpsc, fin), (fin, swe),
-                          (swe, den), (swe, nwy), (nwy, stpnc) 
+                          (swe, den), (swe, nwy), (nwy, stpnc),
+                          (bre, gas), (gas, spanc), (spanc, por),
+                          (por, spasc), (spasc, mar), (mar, pie),
+                          (pie, tus), (tus, rom), (rom, nap),
+                          (nap, apu), (apu, ven), (ven, tri),
+                          (tri, alb), (alb, gre), (gre, bulsc),
+                          (bulsc, con), (bulec, con), (con, ank),
+                          (ank, arm), (arm, sev), (sev, rum),
+                          (rum, bulec), (con, smy), (smy, syr)
                         ], label=['A', 'F'])
+    
 
     nx.draw(board, with_labels=True)
 
