@@ -192,12 +192,12 @@ def main():
                             (nap, tys), (nap, ion), (naf, mao),
                             (naf, wes), (tun, wes), (tun, tys),
                             (tun, ion),
-                            (cly, nao), (cly, nwg), (lvp, nao)
+                            (cly, nao), (cly, nwg), (lvp, nao),
                             (lvp, iri), (wal, iri), (wal, eng),
                             (lon, eng), (lon, nth), (yor, nth),
                             (edi, nth), (edi, nwg), (apu, adr),
                             (apu, ion), (tri, adr), (alb, adr),
-                            (alb, ion), (gre, ion), (gre, aeg)
+                            (alb, ion), (gre, ion), (gre, aeg),
                             (bulsc, aeg), (con, bla), (con, aeg),
                             (smy, eas), (bulec, bla), (rum, bla),
                             (sev, bla), (arm, bla), (ank, bla),
