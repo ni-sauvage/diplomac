@@ -1,6 +1,6 @@
 from territories import *
 import networkx as nx
-import pylab as plt
+import matplotlib.pyplot as plt
 from networkx.drawing.nx_agraph import graphviz_layout
 
 board = None
@@ -89,6 +89,7 @@ def main():
     spanc = Coastal('spanc', True, False, None)
     spasc = Coastal('spasc', True, False, None)
     por = Coastal('por', True, False, None)
+    mar = Coastal('mar', True, True, None)
     pie = Coastal('por', False, False, None)
     tus = Coastal('tus', False, False, None)
     rom = Coastal('por', True, True, None)
@@ -106,6 +107,7 @@ def main():
     rum = Coastal('rum', True, False, None)
     sev = Coastal('sev', True, True, None)
     arm = Coastal('arm', False, False, None)
+    pic = Coastal('bel', False, False, None)
     bel = Coastal('bel', True, False, None)
     kie = Coastal('kie', True, True, None)
     den = Coastal('den', True, False, None)
@@ -120,6 +122,8 @@ def main():
     yor = Coastal('con', False, False, None)
     cly = Coastal('cly', False, False, None)
     wal = Coastal('wal', False, False, None)
+    naf = Coastal('naf', False, False, None)
+    tun = Coastal('tun', True, False, None)
     
     board.add_node(bre)
     board.add_node(gas)
@@ -164,14 +168,33 @@ def main():
 
     for territory in board.nodes():
         terr.append((territory.name, territory))
+    
+    # There's quite a few edges. Ow. Also South/North coasts are *really* annoying
+    
+    board.add_edges_from([(nwg, bar), (nwg, nao), (nwg, nth), 
+                            (nao, iri), (nao, mao), (mao, eng), 
+                            (mao, wes), (mao, iri), (eng, nth), 
+                            (nth, hel), (nth, ska), (bal, bot), 
+                            (wes, lyo), (wes, tys), (tys, ion), 
+                            (lyo, tys), (ion, aeg), (ion, eas), 
+                            (aeg, eas), (adr, ion), (bre, mao), 
+                            (bre, eng), (spanc, mao), (spasc, lyo), 
+                            (spasc, wes), (mar, lyo), (pie, lyo),
+                            (tus, lyo), (tus, tys), (rom, tys), 
+                            (nap, tys), (nap, ion), (naf, mao),
+                            (cly, nao), (cly, nwg), (lvp, nao)
+                            (lvp, iri), (wal, iri), (wal, eng),
+                            (lon, eng), (lon, nth), (yor, nth),
+                            (edi, nth), (edi, nwg), (apu, adr),
+                            (apu, ion), (tri, adr), (alb, adr),
+                            (alb, ion), (gre, ion), (gre, aeg)
+                            (bulsc, aeg), (con, bla), (con, aeg),
+                            (smy, eas), (bulec, bla), (rum, bla),
+                            (sev, bla), (arm, bla), (ank, bla)
+                            ], label=['F'])
+    
+    board.add_edges_from([()])
 
-    board.add_edges_from([(nwg, bar), (nwg, nao), (nwg, nth), \
-                            (nao, iri), (nao, mao), (mao, eng), \
-                            (mao, wes), (mao, iri), (eng, nth), \
-                            (nth, hel), (nth, ska), (bal, bot), \
-                            (wes, lyo), (wes, tys), (tys, ion), \
-                            (lyo, tys), (ion, aeg), (ion, eas), \
-                            (aeg, eas), (adr, ion)]) 
     nx.draw(board, with_labels=True)
 
     plt.show()
