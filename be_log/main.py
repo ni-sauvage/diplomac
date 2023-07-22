@@ -107,12 +107,16 @@ def main():
     rum = Coastal('rum', True, False, None)
     sev = Coastal('sev', True, True, None)
     arm = Coastal('arm', False, False, None)
-    pic = Coastal('bel', False, False, None)
+    pic = Coastal('pic', False, False, None)
     bel = Coastal('bel', True, False, None)
+    hol = Coastal('hol', True, False, None)
     kie = Coastal('kie', True, True, None)
+    ber = Coastal('ber', True, True, None)
+    pru = Coastal('pru', False, False, None)
+    lvn = Coastal('lvn', False, False, None)
     den = Coastal('den', True, False, None)
     swe = Coastal('swe', True, False, None)
-    nor = Coastal('nor', True, False, None)
+    nwy = Coastal('nwy', True, False, None)
     fin = Coastal('fin', False, False, None)
     stpnc = Coastal('stpnc', True, True, None)
     stpsc = Coastal('stpsc', True, True, None)
@@ -151,7 +155,7 @@ def main():
     board.add_node(kie)
     board.add_node(den)
     board.add_node(swe)
-    board.add_node(nor)
+    board.add_node(nwy)
     board.add_node(fin)
     board.add_node(stpnc)
     board.add_node(stpsc)
@@ -161,7 +165,11 @@ def main():
     board.add_node(yor)
     board.add_node(cly)
     board.add_node(wal)
-
+    board.add_node(ber)
+    board.add_node(pru)
+    board.add_node(lvn)
+    board.add_node(tun)
+    board.add_node(naf)
 
 
 
@@ -182,6 +190,8 @@ def main():
                             (spasc, wes), (mar, lyo), (pie, lyo),
                             (tus, lyo), (tus, tys), (rom, tys), 
                             (nap, tys), (nap, ion), (naf, mao),
+                            (naf, wes), (tun, wes), (tun, tys),
+                            (tun, ion),
                             (cly, nao), (cly, nwg), (lvp, nao)
                             (lvp, iri), (wal, iri), (wal, eng),
                             (lon, eng), (lon, nth), (yor, nth),
@@ -190,10 +200,16 @@ def main():
                             (alb, ion), (gre, ion), (gre, aeg)
                             (bulsc, aeg), (con, bla), (con, aeg),
                             (smy, eas), (bulec, bla), (rum, bla),
-                            (sev, bla), (arm, bla), (ank, bla)
+                            (sev, bla), (arm, bla), (ank, bla),
+                            (pic, eng), (bel, eng), (hol, nth),
+                            (hol, hel), (kie, hel), (kie, bal),
+                            (den, hel), (den, nth), (den, ska),
+                            (den, bal), (ber, bal), (pru, bal),
+                            (lvn, bal), (lvn, bot), (stpsc, bot),
+                            (stpnc, bar), (nwy, bar), (nwy, nwg),
+                            (nwy, nth), (nwy, ska), (swe, ska),
+                            (swe, bal), (swe, bot), (fin, bot),
                             ], label=['F'])
-    
-    board.add_edges_from([()])
 
     nx.draw(board, with_labels=True)
 
