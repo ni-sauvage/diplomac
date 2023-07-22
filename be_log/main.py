@@ -230,7 +230,25 @@ def main():
                           (rum, bulec), (con, smy), (smy, syr)
                         ], label=['A', 'F'])
     
-
+    board.add_edges_from([(bre, par), (par, bur), (par, pic),
+                          (par, gas), (bur, pic), (bur, bel),
+                          (bur, ruh), (bur, mun), (bur, mar),
+                          (bur, gas), (mun, ber), (mun, kie),
+                          (mun, ruh), (mun, tyr), (mun, boh),
+                          (mun, tyr), (mun, sil), (sil, war),
+                          (sil, pru), (sil, boh), (sil, gal),
+                          (boh, gal), (boh, vie), (boh, tyr),
+                          (war, pru), (war, lvn), (war, mos),
+                          (war, ukr), (war, gal), (tyr, vie),
+                          (tyr, tri), (tyr, ven), (mos, stpnc),
+                          (mos, stpsc), (mos, lvn), (mos, ukr),
+                          (mos, sev), (ukr, gal), (ukr, rum),
+                          (gal, rum), (gal, bud), (vie, bud),
+                          (vie, tri), (vie, gal), (bud, tri),
+                          (bud, rum), (bud, ser), (ser, alb),
+                          (ser, gre), (ser, bulec), (ser, bulsc),
+                          (pie, ven), (smy, ank), (smy, arm)
+                        ], label=['A'])
     nx.draw(board, with_labels=True)
 
     plt.show()
