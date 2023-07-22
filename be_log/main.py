@@ -103,7 +103,7 @@ def main():
     con = Coastal('con', True, True, None)
     smy = Coastal('smy', True, True, None)
     ank = Coastal('ank', True, True, None)  
-    bulec = Coastal('bulnc', True, False, None)
+    bulec = Coastal('bulec', True, False, None)
     rum = Coastal('rum', True, False, None)
     sev = Coastal('sev', True, True, None)
     arm = Coastal('arm', False, False, None)
@@ -247,7 +247,8 @@ def main():
                           (vie, tri), (vie, gal), (bud, tri),
                           (bud, rum), (bud, ser), (ser, alb),
                           (ser, gre), (ser, bulec), (ser, bulsc),
-                          (pie, ven), (smy, ank), (smy, arm)
+                          (pie, ven), (smy, ank), (smy, arm),
+                          (ruh, bel), (ruh, hol), (ruh, kie)
                         ], label=['A'])
     nx.draw(board, with_labels=True)
 
