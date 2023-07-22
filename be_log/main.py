@@ -127,6 +127,7 @@ def main():
     cly = Coastal('cly', False, False, None)
     wal = Coastal('wal', False, False, None)
     naf = Coastal('naf', False, False, None)
+    syr = Coastal('syr', False, False, None)
     tun = Coastal('tun', True, False, None)
     
     board.add_node(bre)
@@ -170,7 +171,7 @@ def main():
     board.add_node(lvn)
     board.add_node(tun)
     board.add_node(naf)
-
+    board.add_node(syr)
 
 
 
@@ -191,7 +192,7 @@ def main():
                             (tus, lyo), (tus, tys), (rom, tys), 
                             (nap, tys), (nap, ion), (naf, mao),
                             (naf, wes), (tun, wes), (tun, tys),
-                            (tun, ion),
+                            (tun, ion), (syr, eas)
                             (cly, nao), (cly, nwg), (lvp, nao),
                             (lvp, iri), (wal, iri), (wal, eng),
                             (lon, eng), (lon, nth), (yor, nth),
@@ -210,6 +211,15 @@ def main():
                             (nwy, nth), (nwy, ska), (swe, ska),
                             (swe, bal), (swe, bot), (fin, bot),
                             ], label=['F'])
+    
+    board.add_edges_from([(cly, edi), (edi, yor), (yor, lon),
+                          (lon, wal), (wal, lvp), (lvp, cly),
+                          (naf, tun), (bre, pic), (pic, bel),
+                          (bel, hol), (hol, kie), (kie, den),
+                          (kie, ber), (ber, pru), (pru, lvn),
+                          (lvn, stpsc), (stpsc, fin), (fin, swe),
+                          (swe, den), (swe, nwy), (nwy, stpnc) 
+                        ], label=['A', 'F'])
 
     nx.draw(board, with_labels=True)
 
