@@ -4,7 +4,7 @@ class Move():
         self.start = start
         self.end = end
 
-class Support():
+class MoveSupport():
     def __init__(self, u_t : str, loc : str, sup_unit_start : str, sup_unit_end : str):
         self.u_t = u_t
         self.loc = loc
@@ -16,10 +16,16 @@ class Hold():
         self.u_t = u_t
         self.loc = loc
 
-class Support():
+class Convoy():
     def __init__(self, u_t : str, loc : str, con_unit_start : str, con_unit_end : str):
         self.u_t = u_t
         self.loc = loc
         self.con_unit_start = con_unit_start
         self.con_unit_end = con_unit_end
+
+class HoldSupport():
+    def __init__(self, u_t : str, loc : str, sup_unit_loc : str):
+        self.u_t = u_t
+        self.loc = loc
+        self.sup_unit_loc = sup_unit_loc
         

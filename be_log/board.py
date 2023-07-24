@@ -86,8 +86,8 @@ class Board():
 
         bre = territories.Coastal('bre', True, True, units.Fleet('fra'))
         gas = territories.Coastal('gas', False, False, None)
-        spanc = territories.Coastal('spanc', True, False, None)
-        spasc = territories.Coastal('spasc', True, False, None)
+        spanc = territories.Coastal('spa/nc', True, False, None)
+        spasc = territories.Coastal('spa/sc', True, False, None)
         por = territories.Coastal('por', True, False, None)
         mar = territories.Coastal('mar', True, True, units.Army('fra'))
         pie = territories.Coastal('por', False, False, None)
@@ -99,11 +99,11 @@ class Board():
         tri = territories.Coastal('tri', True, True, units.Fleet('aus'))
         alb = territories.Coastal('alb', False, False, None)
         gre = territories.Coastal('gre', True, False, None)
-        bulsc = territories.Coastal('bulsc', True, False, None)
+        bulsc = territories.Coastal('bul/sc', True, False, None)
         con = territories.Coastal('con', True, True, units.Army('tur'))
         smy = territories.Coastal('smy', True, True, units.Army('tur'))
         ank = territories.Coastal('ank', True, True, units.Fleet('tur')) 
-        bulec = territories.Coastal('bulec', True, False, None)
+        bulec = territories.Coastal('bul/ec', True, False, None)
         rum = territories.Coastal('rum', True, False, None)
         sev = territories.Coastal('sev', True, True, units.Fleet('rus'))
         arm = territories.Coastal('arm', False, False, None)
@@ -118,8 +118,8 @@ class Board():
         swe = territories.Coastal('swe', True, False, None)
         nwy = territories.Coastal('nwy', True, False, None)
         fin = territories.Coastal('fin', False, False, None)
-        stpnc = territories.Coastal('stpnc', True, True, None)
-        stpsc = territories.Coastal('stpsc', True, True, units.Fleet('rus'))
+        stpnc = territories.Coastal('stp/nc', True, True, None)
+        stpsc = territories.Coastal('stp/sc', True, True, units.Fleet('rus'))
         lon = territories.Coastal('lon', True, True, units.Fleet('eng'))
         lvp = territories.Coastal('lvp', True, True, units.Army('eng'))
         edi = territories.Coastal('edi', True, True, units.Fleet('eng'))
@@ -273,3 +273,68 @@ class Board():
         nx.draw(self.board, with_labels=True)
         plt.show()
         
+    
+    def adjudicate(self, input : str):
+        lines = input.split('\n')
+
+        order_map = {
+            'hsup': [],
+            'msup': [],
+            'hold': [],
+            'move': [],
+            'con' : [],
+        }
+
+        for line in lines:
+            order = None
+            parts = line.split(' ')
+            if len(parts) < 3:
+                raise ValueError('Too few arguments for order')
+            if parts[0] not in ['A', 'F']:
+                raise ValueError('Neither fleet nor army specified')
+            if parts[2] not in ['S', 'C', 'H', '-']:
+                raise ValueError('Malformed order specification')
+            if parts[1] not in self.terr and parts[1] not in ['bul', 'stp', 'spa']:
+                raise ValueError('Starting state not specified correctly')
+            match parts[2]:
+                case 'H':
+                    order = orders.Hold(parts[0], parts[1])
+                    order_map['hold'].append(order)
+                case '-':
+                    if len(parts) < 4:
+                        raise ValueError('Too few arguments for move order')
+                    if parts[3] not in self.terr and parts[3] not in ['bul', 'stp', 'spa']:
+                        raise ValueError('End location for move not a state')
+                    order = orders.Move(parts[0], parts[1], parts[3])
+                    order_map['move'].append(order)
+                case 'S':
+                    if len(parts) < 4:
+                        raise ValueError('Too few arguments for support order')
+                    if parts[3] not in self.terr and parts[3] not in ['bul', 'stp', 'spa']:
+                        raise ValueError('Supported location not a state')
+                    if len(parts) == 4:
+                        order = orders.HoldSupport(parts[0], parts[1], parts[3])
+                        order_map['hsup'].append(order)
+                    elif len(parts) == 6:
+                        if parts[4] != '-':
+                            raise ValueError('Malformed support error')
+                        if parts[5] not in self.terr and parts[5] not in ['bul', 'stp', 'spa']:
+                           raise ValueError('End support location not a state')
+                        order = orders.MoveSupport(parts[0], parts[1], parts[3], parts[5])
+                        order_map['msup'].append(order)
+                    else:
+                        raise ValueError('Incorrect count of arguments for support order')
+                case 'C':
+                    if len(parts) != 6:
+                        raise ValueError('Incorrect count of arguments for convoy order')
+                    if parts[3] not in self.terr and parts[3] not in ['bul', 'stp', 'spa']:
+                        raise ValueError('Convoy start location not a state')
+                    if parts[5] not in self.terr and parts[5] not in ['bul', 'stp', 'spa']:
+                        raise ValueError('Convoy end location not a state')
+                    if parts[4] != '-':
+                            raise ValueError('Malformed convoy error')
+                    order = orders.Convoy(parts[0], parts[1], parts[3], parts[5])
+                    order_map['con'].append(order)
+                case _:
+                    raise ValueError('Order type malformed')
+                
