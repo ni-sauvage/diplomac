@@ -52,20 +52,20 @@ class Board():
 
         # Non-Coastal Land
 
-        par = territories.Inland('par', True, True, None)
+        par = territories.Inland('par', True, 'fra', None)
         bur = territories.Inland('bur', False, False, None)
         ruh = territories.Inland('ruh', False, False, None)
-        mun = territories.Inland('mun', True, True, units.Army('ger'))
+        mun = territories.Inland('mun', True, 'ger', units.Army('ger'))
         tyr = territories.Inland('tyr', False, False, None)
         boh = territories.Inland('boh', False, False, None)
         sil = territories.Inland('sil', False, False, None)
-        war = territories.Inland('war', True, True, units.Army('rus'))
-        vie = territories.Inland('vie', True, True, units.Army('aus'))
-        bud = territories.Inland('bud', True, True, units.Army('aus'))
+        war = territories.Inland('war', True, 'rus', units.Army('rus'))
+        vie = territories.Inland('vie', True, 'aus', units.Army('aus'))
+        bud = territories.Inland('bud', True, 'aus', units.Army('aus'))
         ser = territories.Inland('ser', True, False, None)
         gal = territories.Inland('gal', False, False, None)
         ukr = territories.Inland('ukr', False, False, None)
-        mos = territories.Inland('mos', True, True, units.Army('rus'))
+        mos = territories.Inland('mos', True, 'rus', units.Army('rus'))
 
         self.board.add_node(par)
         self.board.add_node(bur)
@@ -84,34 +84,34 @@ class Board():
 
         # Coastal Land
 
-        bre = territories.Coastal('bre', True, True, units.Fleet('fra'))
+        bre = territories.Coastal('bre', True, 'fra', units.Fleet('fra'))
         gas = territories.Coastal('gas', False, False, None)
         spanc = territories.Coastal('spa/nc', True, False, None)
         spasc = territories.Coastal('spa/sc', True, False, None)
         por = territories.Coastal('por', True, False, None)
-        mar = territories.Coastal('mar', True, True, units.Army('fra'))
+        mar = territories.Coastal('mar', True, 'fra', units.Army('fra'))
         pie = territories.Coastal('por', False, False, None)
         tus = territories.Coastal('tus', False, False, None)
-        rom = territories.Coastal('por', True, True, units.Army('ita'))
-        nap = territories.Coastal('nap', True, True, units.Fleet('ita'))
+        rom = territories.Coastal('por', True, 'ita', units.Army('ita'))
+        nap = territories.Coastal('nap', True, 'ita', units.Fleet('ita'))
         apu = territories.Coastal('apu', False, False, None)
-        ven = territories.Coastal('ven', True, True, units.Army('ita'))
-        tri = territories.Coastal('tri', True, True, units.Fleet('aus'))
+        ven = territories.Coastal('ven', True, 'ita', units.Army('ita'))
+        tri = territories.Coastal('tri', True, 'aus', units.Fleet('aus'))
         alb = territories.Coastal('alb', False, False, None)
         gre = territories.Coastal('gre', True, False, None)
         bulsc = territories.Coastal('bul/sc', True, False, None)
-        con = territories.Coastal('con', True, True, units.Army('tur'))
-        smy = territories.Coastal('smy', True, True, units.Army('tur'))
-        ank = territories.Coastal('ank', True, True, units.Fleet('tur')) 
+        con = territories.Coastal('con', True, 'tur', units.Army('tur'))
+        smy = territories.Coastal('smy', True, 'tur', units.Army('tur'))
+        ank = territories.Coastal('ank', True, 'tur', units.Fleet('tur')) 
         bulec = territories.Coastal('bul/ec', True, False, None)
         rum = territories.Coastal('rum', True, False, None)
-        sev = territories.Coastal('sev', True, True, units.Fleet('rus'))
+        sev = territories.Coastal('sev', True, 'rus', units.Fleet('rus'))
         arm = territories.Coastal('arm', False, False, None)
         pic = territories.Coastal('pic', False, False, None)
         bel = territories.Coastal('bel', True, False, None)
         hol = territories.Coastal('hol', True, False, None)
-        kie = territories.Coastal('kie', True, True, units.Fleet('ger'))
-        ber = territories.Coastal('ber', True, True, units.Army('ger'))
+        kie = territories.Coastal('kie', True, 'ger', units.Fleet('ger'))
+        ber = territories.Coastal('ber', True, 'ger', units.Army('ger'))
         pru = territories.Coastal('pru', False, False, None)
         lvn = territories.Coastal('lvn', False, False, None)
         den = territories.Coastal('den', True, False, None)
@@ -120,9 +120,9 @@ class Board():
         fin = territories.Coastal('fin', False, False, None)
         stpnc = territories.Coastal('stp/nc', True, True, None)
         stpsc = territories.Coastal('stp/sc', True, True, units.Fleet('rus'))
-        lon = territories.Coastal('lon', True, True, units.Fleet('eng'))
-        lvp = territories.Coastal('lvp', True, True, units.Army('eng'))
-        edi = territories.Coastal('edi', True, True, units.Fleet('eng'))
+        lon = territories.Coastal('lon', True, 'eng', units.Fleet('eng'))
+        lvp = territories.Coastal('lvp', True, 'eng', units.Army('eng'))
+        edi = territories.Coastal('edi', True, 'eng', units.Fleet('eng'))
         yor = territories.Coastal('con', False, False, None)
         cly = territories.Coastal('cly', False, False, None)
         wal = territories.Coastal('wal', False, False, None)
@@ -266,7 +266,7 @@ class Board():
             'ita' : country_ita,
             'aus' : country_aus,
             'tur' : country_tur,
-            'rus' : country_tur
+            'rus' : country_rus
         }
     
     def visualise(self):
@@ -352,4 +352,4 @@ class Board():
                     order_map['con'][parts[0]].append(order)
                 case _:
                     raise ValueError('Order type malformed')
-                
+        

@@ -12,14 +12,14 @@ class Sea(Territory):
         super().__init__(name, occ)
 
 class Coastal(Territory):
-    def __init__(self, name : str, centre: bool, hc : bool, occ : Unit):
+    def __init__(self, name : str, centre: bool, hc : str, occ : Unit):
         self.name = name
         self.occ = occ
         self.centre = centre
         self.hc = hc
 
 class Inland(Territory):
-    def __init__(self, name : str, centre: bool, hc : bool, occ : Unit):
+    def __init__(self, name : str, centre: bool, hc : str, occ : Unit):
         self.name = name
         self.occ = occ
         self.centre = centre
