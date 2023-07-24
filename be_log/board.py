@@ -278,11 +278,26 @@ class Board():
         lines = input.split('\n')
 
         order_map = {
-            'hsup': [],
-            'msup': [],
-            'hold': [],
-            'move': [],
-            'con' : [],
+            'hsup': {
+                'F' : [],
+                'A' : []
+            },
+            'msup': {
+                'F' : [],
+                'A' : []
+            },
+            'hold': {
+                'F' : [],
+                'A' : []
+            },
+            'move': {
+                'F' : [],
+                'A' : []
+            },
+            'con' : {
+                'F' : [],
+                'A' : []
+            }
         }
 
         for line in lines:
@@ -299,14 +314,14 @@ class Board():
             match parts[2]:
                 case 'H':
                     order = orders.Hold(parts[0], parts[1])
-                    order_map['hold'].append(order)
+                    order_map['hold'][parts[0]].append(order)
                 case '-':
                     if len(parts) < 4:
                         raise ValueError('Too few arguments for move order')
                     if parts[3] not in self.terr and parts[3] not in ['bul', 'stp', 'spa']:
                         raise ValueError('End location for move not a state')
                     order = orders.Move(parts[0], parts[1], parts[3])
-                    order_map['move'].append(order)
+                    order_map['move'][parts[0]].append(order)
                 case 'S':
                     if len(parts) < 4:
                         raise ValueError('Too few arguments for support order')
@@ -314,14 +329,14 @@ class Board():
                         raise ValueError('Supported location not a state')
                     if len(parts) == 4:
                         order = orders.HoldSupport(parts[0], parts[1], parts[3])
-                        order_map['hsup'].append(order)
+                        order_map['hsup'][parts[0]].append(order)
                     elif len(parts) == 6:
                         if parts[4] != '-':
                             raise ValueError('Malformed support error')
                         if parts[5] not in self.terr and parts[5] not in ['bul', 'stp', 'spa']:
                            raise ValueError('End support location not a state')
                         order = orders.MoveSupport(parts[0], parts[1], parts[3], parts[5])
-                        order_map['msup'].append(order)
+                        order_map['msup'][parts[0]].append(order)
                     else:
                         raise ValueError('Incorrect count of arguments for support order')
                 case 'C':
@@ -334,7 +349,7 @@ class Board():
                     if parts[4] != '-':
                             raise ValueError('Malformed convoy error')
                     order = orders.Convoy(parts[0], parts[1], parts[3], parts[5])
-                    order_map['con'].append(order)
+                    order_map['con'][parts[0]].append(order)
                 case _:
                     raise ValueError('Order type malformed')
                 
