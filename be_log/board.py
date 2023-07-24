@@ -6,7 +6,7 @@ from networkx.drawing.nx_agraph import graphviz_layout
 class Board():
     def __init__(self):
 
-        self.terr = []
+        self.terr : map[str, territories.Territory] = {}
         self.board = nx.Graph()
         # seas
         mao = territories.Sea('mao', None)
@@ -176,7 +176,7 @@ class Board():
 
 
         for territory in self.board.nodes():
-            self.terr.append((territory.name, territory))
+            self.terr[territory.name] = territory
 
         # There's quite a few edges. Ow. Also South/North coasts are *really* annoying
 
@@ -314,14 +314,22 @@ class Board():
             match parts[2]:
                 case 'H':
                     order = orders.Hold(parts[0], parts[1])
-                    order_map['hold'][parts[0]].append(order)
+                    unit = self.terr[parts[1]].occ
+                    if unit != None:
+                        if unit.__name__[0] == parts[0]:
+                            unit.order = order
+                            order_map['hold'][parts[0]].append(order)
                 case '-':
                     if len(parts) < 4:
                         raise ValueError('Too few arguments for move order')
                     if parts[3] not in self.terr and parts[3] not in ['bul', 'stp', 'spa']:
                         raise ValueError('End location for move not a state')
                     order = orders.Move(parts[0], parts[1], parts[3])
-                    order_map['move'][parts[0]].append(order)
+                    unit = self.terr[parts[1]].occ
+                    if unit != None:
+                        if unit.__name__[0] == parts[0]:
+                            unit.order = order
+                            order_map['move'][parts[0]].append(order)
                 case 'S':
                     if len(parts) < 4:
                         raise ValueError('Too few arguments for support order')
@@ -329,14 +337,22 @@ class Board():
                         raise ValueError('Supported location not a state')
                     if len(parts) == 4:
                         order = orders.HoldSupport(parts[0], parts[1], parts[3])
-                        order_map['hsup'][parts[0]].append(order)
+                        unit = self.terr[parts[1]].occ
+                        if unit != None:
+                            if unit.__name__[0] == parts[0]:
+                                unit.order = order
+                                order_map['hsup'][parts[0]].append(order)
                     elif len(parts) == 6:
                         if parts[4] != '-':
                             raise ValueError('Malformed support error')
                         if parts[5] not in self.terr and parts[5] not in ['bul', 'stp', 'spa']:
                            raise ValueError('End support location not a state')
                         order = orders.MoveSupport(parts[0], parts[1], parts[3], parts[5])
-                        order_map['msup'][parts[0]].append(order)
+                        unit = self.terr[parts[1]].occ
+                        if unit != None:
+                            if unit.__name__[0] == parts[0]:
+                                unit.order = order
+                                order_map['msup'][parts[0]].append(order)
                     else:
                         raise ValueError('Incorrect count of arguments for support order')
                 case 'C':
@@ -349,7 +365,46 @@ class Board():
                     if parts[4] != '-':
                             raise ValueError('Malformed convoy error')
                     order = orders.Convoy(parts[0], parts[1], parts[3], parts[5])
-                    order_map['con'][parts[0]].append(order)
+                    unit = self.terr[parts[1]].occ
+                    if unit != None:
+                        if unit.__name__[0] == parts[0]:
+                            unit.order = order
+                            order_map['con'][parts[0]].append(order)
                 case _:
                     raise ValueError('Order type malformed')
-        
+                
+        cut: orders.Move
+        for cut in order_map['move']['F']:
+            end : territories.Territory = self.terr[cut.end]
+            start : territories.Territory = self.terr[cut.start]
+            cut_unit = end.occ
+            cut_order : orders.Order
+            if cut_unit != None:
+                cut_order = cut_unit.order
+                try:
+                    edge = self.board[start][end]
+                    if 'F' in edge['label']:
+                        match cut_order.__name__:
+                            case 'MoveSupport':
+                                order_map['msup'][cut_order.u_t].remove(cut_order)
+                            case 'HoldSupport':
+                                order_map['hsup'][cut_order.u_t].remove(cut_order)
+                            case _:
+                                pass
+                except:
+                    print(f'edge [{start}][{end}] does not exist')
+
+        support : orders.HoldSupport
+        for support in order_map['hsup']['F']:
+            supporting_terr = self.terr[support.loc]
+            supported_terr = self.terr[support.sup_unit_loc]
+            supported_unit = supported_terr.occ
+            if supported_unit != None:
+                supported_order = supported_unit.order
+                if supported_order.__name__ == 'Hold':
+                    try:
+                        edge = self.board[supporting_terr][supported_terr]
+                        if 'F' in edge['label']:
+                            supported_order.strength += 1
+                    except:
+                        print(f'edge [{supporting_terr}][{supported_terr}] does not exist')
