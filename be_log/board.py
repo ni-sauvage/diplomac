@@ -299,9 +299,9 @@ class Board():
                 'A' : []
             }
         }
-        retreats : map[str, units.Unit] = {}
+        retreats : dict[str, units.Unit] = {}
 
-        possible_retreats : map[str, units.Unit] = {}
+        possible_retreats : dict[str, units.Unit] = {}
         
         for line in lines:
             order = None
@@ -463,6 +463,6 @@ class Board():
     # Army moves
     # Retreats
 
-    def remove_order(self, map : map[str, map[str, list[orders.Order]]], order : orders.Order) -> map[str, map[str, list[orders.Order]]]:
+    def remove_order(self, map : dict[str, dict[str, list[orders.Order]]], order : orders.Order) -> dict[str, dict[str, list[orders.Order]]]:
         key = order.__name__.lower() if len(order.name) == 4 else f'{order.__name__[0].lower()}{order.__name__[4:7].lower()}' # When I wrote this only god and I knew what it does. Now only god knows what it does.
         return map[key][order.u_t].remove(order)
