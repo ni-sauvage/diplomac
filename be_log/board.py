@@ -299,7 +299,10 @@ class Board():
                 'A' : []
             }
         }
+        retreats : map[str, units.Unit] = {}
 
+        possible_retreats : map[str, units.Unit] = {}
+        
         for line in lines:
             order = None
             parts = line.split(' ')
@@ -408,3 +411,58 @@ class Board():
                             supported_order.strength += 1
                     except:
                         print(f'edge [{supporting_terr}][{supported_terr}] does not exist')
+        
+        support : orders.MoveSupport
+        for support in order_map['msup']['F']:
+            supporting_terr = self.terr[support.loc]
+            support_start = self.terr[support.sup_unit_start]
+            support_end = self.terr[support.sup_unit_end]
+            supported_unit = support_start.occ
+            enemy_unit = support_end.occ
+            supporting_unit = supporting_terr.occ
+            if supporting_unit == None or supported_unit == None:
+                continue
+            if enemy_unit != None:
+                if enemy_unit.country == supporting_terr.occ:
+                    continue
+            supported_order = supported_unit.order
+            if supported_order.__name__ == 'Move':
+                if self.board.has_edge(supporting_terr, support_start) and \
+                    self.board.has_edge(supporting_terr, support_end):
+                    if 'F' in self.board[supporting_terr][support_end] and \
+                       'F' in self.board[supporting_terr][support_start]:
+                        supported_order = supported_unit.order
+                        supported_order.strength += 1
+
+        
+        move: orders.Move
+        for move in order_map['move']['F']:
+            end = move.end
+            greatest_str = True
+            alt_move : orders.Move
+            for alt_move in order_map['move']['F']:
+                if alt_move.end == end and alt_move.strength >= move.strength:
+                    greatest_str = False
+            if greatest_str:
+                if end.occ != None:
+                    if end.occ.order.__name__ == 'Move':
+                        if move.strength > 1 and self.board.has_edge(self.terr[move.start], self.terr[move.end]):
+                            if end.occ.order.end == move.start:
+                                order_map['move']['F'].remove(end.occ.order)
+                                possible_retreats[move.start] = None
+                            else:
+                                possible_retreats[move.end] = end.occ
+                            end.occ = self.terr[move.start].occ
+                            self.terr[move.start].occ = None
+
+
+    # TODO
+    # Coasts
+    # Convoys
+    # Army supports
+    # Army moves
+    # Retreats
+
+    def remove_order(self, map : map[str, map[str, list[orders.Order]]], order : orders.Order) -> map[str, map[str, list[orders.Order]]]:
+        key = order.__name__.lower() if len(order.name) == 4 else f'{order.__name__[0].lower()}{order.__name__[4:7].lower()}' # When I wrote this only god and I knew what it does. Now only god knows what it does.
+        return map[key][order.u_t].remove(order)

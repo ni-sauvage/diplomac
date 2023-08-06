@@ -15,6 +15,7 @@ class MoveSupport(Order):
         self.loc = loc
         self.sup_unit_start = sup_unit_start
         self.sup_unit_end = sup_unit_end
+        self.strength : int = 1
 
 class Hold(Order):
     def __init__(self, u_t : str, loc : str) -> None:
@@ -28,10 +29,12 @@ class Convoy(Order):
         self.loc = loc
         self.con_unit_start = con_unit_start
         self.con_unit_end = con_unit_end
+        self.strength : int = 1
 
 class HoldSupport(Order):
     def __init__(self, u_t : str, loc : str, sup_unit_loc : str):
         self.u_t = u_t
         self.loc = loc
         self.sup_unit_loc = sup_unit_loc
+        self.strength : int = 1
         
