@@ -277,6 +277,8 @@ class Board():
     def adjudicate(self, input : str):
         lines = input.split('\n')
 
+        split_states = ['spa', 'bul', 'stp']
+        
         order_map = {
             'hsup': {
                 'F' : [],
@@ -429,32 +431,47 @@ class Board():
             if supported_order.__name__ == 'Move':
                 if self.board.has_edge(supporting_terr, support_start) and \
                     self.board.has_edge(supporting_terr, support_end):
-                    if 'F' in self.board[supporting_terr][support_end] and \
-                       'F' in self.board[supporting_terr][support_start]:
+                    if 'F' in self.board[supporting_terr][support_end]['label'] and \
+                       'F' in self.board[supporting_terr][support_start]['label']:
                         supported_order = supported_unit.order
                         supported_order.strength += 1
-
         
         move: orders.Move
         for move in order_map['move']['F']:
             end = move.end
+            start = move.start
             greatest_str = True
             alt_move : orders.Move
-            for alt_move in order_map['move']['F']:
-                if alt_move.end == end and alt_move.strength >= move.strength:
-                    greatest_str = False
-            if greatest_str:
-                if end.occ != None:
-                    if end.occ.order.__name__ == 'Move':
-                        if move.strength > 1 and self.board.has_edge(self.terr[move.start], self.terr[move.end]):
-                            if end.occ.order.end == move.start:
-                                order_map['move']['F'].remove(end.occ.order)
+            end_state : territories.Territory = self.terr[end]
+            start_state : territories.Territory = self.terr[start]
+            if start_state.occ == None:
+                continue
+            edge = self.board[start_state][end_state]
+            if edge == None:
+                continue
+            for unit_type in order_map['move']:
+                for alt_move in order_map['move'][unit_type]:
+                    if alt_move.end == end and alt_move.strength >= move.strength:
+                        greatest_str = False
+                
+            if greatest_str and 'F' in edge['label']:
+                if end_state.occ != None:
+                    if end_state.occ.order.__name__ == 'Move':
+                        if move.strength > 1:
+                            if end_state.occ.order.end == move.start:
+                                order_map['move'][end_state.occ.u_t].remove(end_state.occ.order)
                                 possible_retreats[move.start] = None
                             else:
                                 possible_retreats[move.end] = end.occ
-                            end.occ = self.terr[move.start].occ
-                            self.terr[move.start].occ = None
-
+                            end.occ = start_state.occ
+                            start_state.occ = None
+                    else:
+                        end_strength = end_state.occ.strength
+                        if move.strength > end_strength:
+                            self.remove_order(end_state.occ.order)
+                            retreats[end] = end_state.occ
+                            end_state.occ = start_state.occ
+                            start_state.occ = None
 
     # TODO
     # Coasts
